@@ -1,0 +1,186 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --bg: #425A49;
+    
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg);
+    font-size: 15pt;
+}
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.container, .Input_User-Container, .well_Done{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 350px;
+    height: 290px;
+    background-color: #fff;
+    box-shadow: -2px 2px 5px black,
+     2px 3px 5px black
+    ;
+}
+ .application{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 2em;
+    
+}
+.application h1{
+    font-size: .8em;
+    text-transform: capitalize;
+    font-weight: bolder;
+    font-family: sans-serif;
+}
+.colors{
+    width: 100%;
+    height: .3em;
+    background: linear-gradient(
+        to right, #E53243 ,#040832, #6873E5
+    );
+}
+.container h2{
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-size: .8em;
+    text-transform: uppercase;
+    padding-block: .8em;
+}
+.text-code{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1em;
+    width: 100%;
+    height: auto;
+    background-color: skyblue;
+    font-size: .8em;
+    padding-block: .5em;
+}
+.text-code span{
+    padding-inline:.2em;
+}
+.inputs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 3em;
+}
+.inputs >*{
+    text-align: center;
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 1em;
+}
+.inputs input:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+
+ .button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3em;
+    padding-top: .8em;
+}
+ .button-container button{
+    width: 80%;
+    height: 3em;
+    border: none;
+    background-color: green;
+    color: #fff;
+    font-size: .8em;
+    text-transform: capitalize;
+}
+
+ .button-container button:focus{
+     background-color: darkgreen;
+    
+}
+.Input_User-Container{
+    display: flex;
+}
+.input_templet{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+}
+.input_templet label{
+    text-align: start;
+    width: 80%;
+    height: auto;
+    font-size: .6em;
+    color: green;
+}
+.input_templet input{
+    width: 80%;
+    height: 2.5em;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    
+}
+.Input_User-Container h4{
+    font-size: .7em;
+    color: green;
+    padding-top: 1em;
+}
+
+.Input_User-Container h4 span{
+    color: #000;
+}
+
+.well_Done {
+    display: none;
+}
+.wellDone_templete{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 70%;
+}
+.wellDone_templete h1 {
+    text-transform: capitalize;
+    font-size: 1em;
+    font-family: monospace;
+    color: green;
+}
+.wellDone_templete p {
+    text-align: center;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    text-transform: capitalize;
+    font-family: monospace;
+}
+
