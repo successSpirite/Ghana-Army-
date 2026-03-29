@@ -4,9 +4,29 @@ const Num = document.getElementById("num");
 
 const Numerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-//const sumOfAll = [...Numerals];
+const UpperCASE = ["A","B","C","D","E","F", "G","H" ,"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-//console.log(sumOfAll.length);
+
+const sumOfAllGAF = [...Numerals, ...UpperCASE];
+
+//console.log(sumOfAll);
+
+function generateGAF(code, length = 9) {
+  
+  let newCode = " ";
+  for (var i = 0; i < length; i++) {
+    // Tab to edit
+    const randomIndex = Math.floor(Math.random() * code.length);
+    newCode += code[randomIndex];
+  }
+  return newCode;
+  
+}
+
+
+
+
+
 
 
 
@@ -117,9 +137,14 @@ const InputUserContainer = document.querySelector(".Input_User-Container");
 
 const inputGAF = document.getElementById('inputGAF');
 
+//Generate GAF
+inputGAF.value = generateGAF(sumOfAllGAF);
+
 const gafUserBTN =  document.getElementById("GAFBTN");
 
 gafUserBTN.addEventListener('click', ()=>{
+  
+  console.log(inputGAF.value);
   
   if (inputGAF.value.trim() === '') {
     InputUserContainer.style.display = "flex";
