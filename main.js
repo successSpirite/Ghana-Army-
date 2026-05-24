@@ -1,4 +1,7 @@
 
+AOS.init();
+
+
 const Num = document.getElementById("num");
 
 
