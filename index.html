@@ -2,95 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HTML</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#14251d">
+  <meta name="description" content="A Ghana Army-inspired OTP and code generator UI prototype for frontend demonstration.">
+  <title>GAF Code Generator — UI Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="style.css">
-  
-<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  
-  
 </head>
+<body style="display: flex; justify-content: center; align-items: center;">
+  <div class="vid">
+    <video src="vid/army.mp4 " muted autoplay loop playsinline></video>
+  </div> 
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="GAF Code Generator demo home">
+      <span class="brand-mark"><img src="ghana.png" alt="Ghana-inspired emblem"></span>
+      <span class="brand-copy"><strong>GAF CODE</strong><small>AUTHENTICATION DEMO</small></span>
+    </a>
+    <div class="topbar-status"><span class="status-dot"></span> Interactive prototype</div>
+  </header>
 
-<body>
-  
-  <section class="main_Container" data-aos="zoom-in" data-aos-delay="700" data-aos-duration="300">
-  <div class="container ">
-   <div class="application">
-     <img src="ghana.png" alt="" />
-<h1>Application Authentication</h1>
-   </div>
-    <div class="colors"> </div>
-     
-    <h2>otp verification</h2>
-    
-    <div class="text-code">OTP verification OTP : <span id="num"></span> 
-    </div>
-    
-    <div class="inputs">
-  <input class="Num-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-<input class="Num-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-<input class="Num-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-<input class="Num-input"  type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-<input class="Num-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-<input class="Num-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-      
-    </div>
-    <div class="button-container">
-<button type="submit" id="BTN">submit</button>
-    </div>
-    
-  </div>
-  
-  
-  
-  
-<div class="Input_User-Container">
-<div class="application">
-  <img src="ghana.png" alt="" />
-  <h1>Application Authentication</h1>
-</div>
-<div class="colors"> </div>
+  <main class="page-shell">
+    <section class="intro reveal">
+      <span class="eyebrow"><span class="eyebrow-line"></span> DIGITAL ACCESS CONCEPT</span>
+      <h1>Secure access.<br><span>Simple verification.</span></h1>
+      <p>A polished front-end demonstration of a multi-step code verification experience, inspired by military recruitment portals.</p>
+      <div class="intro-meta"><span><i class="meta-icon">01</i> Generate ID</span><span><i class="meta-icon">02</i> Verify OTP</span><span><i class="meta-icon">03</i> Confirmation</span></div>
+    </section>
 
+    <section class="app-card reveal" aria-live="polite">
+      <div class="card-top">
+        <div class="card-heading">
+          <div class="mini-emblem"><img src="ghana.png" alt=""></div>
+          <div><span class="overline">ACCESS CONSOLE</span><h2 id="stepTitle">Application ID</h2></div>
+        </div>
+        <span class="step-pill" id="stepPill">STEP 01 <span>/ 03</span></span>
+      </div>
+      <div class="progress-track"><span id="progressBar"></span></div>
 
-<div class="input_templet">
-  
-<label for="inputGAF">Enter GAF ID</label>
-  
-  <input type="text" name="" id="inputGAF">
-  
-<div class="button-container">
-<button type="submit" id="GAFBTN">submit</button>
-</div>
+      <div class="panel active" id="idPanel">
+        <div class="panel-icon"><span>⌁</span></div>
+        <h3>Generate your demo ID</h3>
+        <p class="panel-description">Create a sample reference code to continue through this interface demo.</p>
+        <label for="gafId">Sample GAF reference ID</label>
+        <div class="input-with-action">
+          <input id="gafId" type="text" readonly aria-describedby="idHelp">
+          <button class="icon-button" id="refreshId" type="button" aria-label="Generate another sample ID" title="Generate another ID">↻</button>
+        </div>
+        <small class="helper" id="idHelp">This is randomly generated in your browser for demonstration only.</small>
+        <button class="primary-button" id="continueBtn" type="button">Continue to verification <span>→</span></button>
+      </div>
 
-<h4><a href="#">Forgotten GAF ID ?</a> <span>print summery sheet</span></h4>
-  
-</div>
+      <div class="panel" id="otpPanel" hidden>
+        <div class="panel-icon"><span>⌑</span></div>
+        <h3>Verify your one-time code</h3> 
+        <p class="panel-description">Enter the six-digit demo OTP shown below. This prototype does not send SMS or verify a real application.</p>
+        <div class="otp-preview"><span class="preview-label">DEMO OTP</span><strong id="otpCode">000000</strong><button id="refreshOtp" class="text-button" type="button">New code ↻</button></div>
+        <form id="otpForm">
+          <label for="otp1">Enter the 6-digit code</label>
+          <div class="otp-inputs" aria-label="Six digit one-time password">
+            <input id="otp1" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Digit 1" required>
+            <input class="otp-input" inputmode="numeric" maxlength="1" aria-label="Digit 2" required>
+            <input class="otp-input" inputmode="numeric" maxlength="1" aria-label="Digit 3" required>
+            <input class="otp-input" inputmode="numeric" maxlength="1" aria-label="Digit 4" required>
+            <input class="otp-input" inputmode="numeric" maxlength="1" aria-label="Digit 5" required>
+            <input class="otp-input" inputmode="numeric" maxlength="1" aria-label="Digit 6" required>
+          </div>
+          <p class="form-message" id="otpMessage" role="status"></p>
+          <button class="primary-button" type="submit">Verify code <span>→</span></button>
+        </form>
+        <button class="back-button" id="backToId" type="button">← Back to ID</button>
+      </div>
 
+      <div class="panel success-panel" id="successPanel" hidden>
+        <div class="success-check">✓</div>
+        <span class="overline">DEMO COMPLETE</span>
+        <h3>Verification successful</h3>
+        <p class="panel-description">You completed the front-end flow. No application has been submitted and no real recruitment account was accessed.</p>
+        <div class="summary-row"><span>Sample reference ID</span><strong id="summaryId">—</strong></div>
+        <div class="summary-row"><span>Demo status</span><strong class="status-success">Verified locally</strong></div>
+        <button class="primary-button" id="restartBtn" type="button">Start again <span>↻</span></button>
+      </div>
 
-</div>
-  
+      <div class="card-footer"><span class="shield">◇</span><span>Front-end demonstration only</span><span class="footer-lock">LOCAL DEMO</span></div>
+    </section>
 
-<div class="well_Done">
-<div class="application">
-  <img src="ghana.png" alt="" />
-  <h1>Application Authentication</h1>
-</div>
-<div class="colors"> </div>
-
-
-<div class="wellDone_templete ">
-  <h1>well noted ! thank you </h1>
-  <p>we will alert you when a new message arrives.</p>
-</div>
-
-
-</div>
-
-
-  </section>
-  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <aside class="notice reveal  "  ><span class="notice-symbol">i</span><p><strong>Important:</strong> This is an independent portfolio project and is not an official Ghana Armed Forces service. Codes are generated locally and do not authenticate real recruitment applications.</p></aside>
+    <!-- <footer class="footer" style="margin-block: 1em; font-size: .8em;"><span>Designed as a responsive UI/UX project</span><span>HTML · CSS · JavaScript</span></footer> -->
+  </main>
   <script src="main.js"></script>
 </body>
 </html>
