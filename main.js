@@ -1,166 +1,169 @@
+const idPanel = document.getElementById('idPanel');
+const otpPanel = document.getElementById('otpPanel');
+const successPanel = document.getElementById('successPanel');
+const stepTitle = document.getElementById('stepTitle');
+const stepPill = document.getElementById('stepPill');
+const progressBar = document.getElementById('progressBar');
+const gafId = document.getElementById('gafId');
+const otpCode = document.getElementById('otpCode');
+const otpInputs = [...document.querySelectorAll('.otp-input')];
+const otpForm = document.getElementById('otpForm');
+const otpMessage = document.getElementById('otpMessage');
 
-AOS.init();
+let currentOtp = '';
 
-
-const Num = document.getElementById("num");
-
-
-const Numerals = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-const UpperCASE = ["A","B","C","D","E","F", "G","H" ,"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-
-
-const sumOfAllGAF = [...Numerals, ...UpperCASE];
-
-//console.log(sumOfAll);
-
-function generateGAF(code, length = 9) {
-  
-  let newCode = " ";
-  for (var i = 0; i < length; i++) {
-    // Tab to edit
-    const randomIndex = Math.floor(Math.random() * code.length);
-    newCode += code[randomIndex];
+function randomDigits(length) {
+  const values = new Uint32Array(length);
+  if (window.crypto && window.crypto.getRandomValues) {
+    window.crypto.getRandomValues(values);
+    return [...values].map(value => String(value % 10)).join('');
   }
-  return newCode;
-  
+  return Array.from({ length }, () => Math.floor(Math.random() * 10)).join('');
+}
+
+function randomId(length = 9) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const values = new Uint32Array(length);
+  if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(values);
+  else values.forEach((_, i) => values[i] = Math.floor(Math.random() * chars.length));
+  return 'GAF-' + [...values].map(value => chars[value % chars.length]).join('');
 }
 
 
+function animatePanel(panel) {
+  panel.classList.remove('animate__animated', 'animate__zoomIn');
 
+  void panel.offsetWidth;
+  // console.log(panel.offsetWidth);
 
-
-
-
-
-
-function generateCode(code, length = 6) {
-  
-  let newCode = " ";
-  for (var i = 0; i < length; i++) {
-    // Tab to edit
-    const randomIndex = Math.floor(Math.random() * code.length);
-    newCode += code[randomIndex];
-  }
-  return newCode;
-  
+  panel.classList.add('animate__animated', 'animate__zoomIn');
+  panel.style.setProperty('--animation-duration', '.5s');
 }
 
 
-
-
-
-//Generating code
-setTimeout(  ()=>{
-Num.textContent = generateCode(Numerals);
-}, 100);
-
-
-
-
-
-
-//Auto moving cusor
-  const NumInput = document.querySelectorAll(".Num-input");
-  
-
-NumInput.forEach((input, index)=>{
-  input.addEventListener( 'input', ()=>{
-    if (input.value.length === 1) {
-      
-      if (index < NumInput.length - 1) {
-        NumInput[index + 1 ].focus();
-      }
-      
-      
-    }
-  } );
-  
-  input.addEventListener("keydown", (e)=>{
-    if (e.key === "Backspace" && input.value === " ") {
-      if (index > 0) {
-        
-    NumInput[index - 1].focus();
-   NumInput[index - 1].value = " ";
-
-
-      }
-      
-    }
-    
-  });
-  
-  
-} );
-
-
-
-
-
-
-// submit Button 
-const Button = document.getElementById("BTN");
-
-Button.addEventListener('click', ()=>{
-  const inputedCodes = Array.from(NumInput).map(input => input.value).join('');
-  const AuctualCode = Num.textContent.trim();
-//  console.log( "Actual code " + AuctualCode);
- //console.log("inputedCodes " + inputedCodes);
-  
-  
-  if ( inputedCodes === AuctualCode){
-  //  console.log("hello");
-    
-    
-    document.querySelector(".container").style.display = "none";
-
-
-const TimeoutId = setTimeout(   ()=>{
-  
-document.querySelector(".well_Done    ").style.display = "flex";
-  
-}, 1000);
-//clearTimeout(TimeoutId);
-
-//document.querySelector(".Input_User-Container").style.display = "flex";
-  
-
-    
-    
+function setStep(step) {
+  [idPanel, otpPanel, successPanel].forEach(panel => panel.hidden = true);
+  if (step === 1) {
+    idPanel.hidden = false;
+    animatePanel(idPanel);
+    stepTitle.textContent = 'Application ID';
+    stepPill.innerHTML = 'STEP 01 <span>/ 03</span>';
+    progressBar.style.width = '33.33%';
+  } else if (step === 2) {
+    otpPanel.hidden = false;
+    animatePanel(otpPanel);
+    stepTitle.textContent = 'OTP Verification';
+    stepPill.innerHTML = 'STEP 02 <span>/ 03</span>';
+    progressBar.style.width = '66.66%';
+    otpInputs[0].focus();
+  } else {
+    successPanel.hidden = false;
+    animatePanel(successPanel);
+    stepTitle.textContent = 'Confirmation';
+    stepPill.innerHTML = 'STEP 03 <span>/ 03</span>';
+    progressBar.style.width = '100%';
+    document.getElementById('summaryId').textContent = gafId.value;
   }
-  
+}
+
+function createOtp() {
+  currentOtp = randomDigits(6);
+  otpCode.textContent = currentOtp;
+  otpInputs.forEach(input => input.value = '');
+  otpMessage.textContent = '';
+}
+
+document.getElementById('refreshId').addEventListener('click', () => {
+  gafId.value = randomId();
+  gafId.animate([{ transform: 'scale(.98)', opacity: .6 }, { transform: 'scale(1)', opacity: 1 }], { duration: 220 });
 });
 
+document.getElementById('continueBtn').addEventListener('click', () => {
+  createOtp();
+  setStep(2);
+});
 
-//GAF
-const codeContainer =  document.querySelector(".container");
+document.getElementById('refreshOtp').addEventListener('click', () => {
+  createOtp();
+  otpInputs[0].focus();
+});
 
-const InputUserContainer = document.querySelector(".Input_User-Container");
+document.getElementById('backToId').addEventListener('click', () => setStep(1));
 
+otpInputs.forEach((input, index) => {
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/\D/g, '').slice(-1);
+    if (input.value && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+    otpMessage.textContent = '';
+  });
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Backspace' && !input.value && index > 0) {
+      otpInputs[index - 1].focus();
+      otpInputs[index - 1].value = '';
+    }
+    if (event.key === 'ArrowLeft' && index > 0) otpInputs[index - 1].focus();
+    if (event.key === 'ArrowRight' && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+  });
+  input.addEventListener('paste', event => {
+    const pasted = (event.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+    if (!pasted) return;
+    event.preventDefault();
+    pasted.split('').forEach((digit, i) => { if (otpInputs[i]) otpInputs[i].value = digit; });
+    otpInputs[Math.min(pasted.length, 5)].focus();
+  });
+});
 
-const inputGAF = document.getElementById('inputGAF');
-
-//Generate GAF
-inputGAF.value = generateGAF(sumOfAllGAF);
-
-const gafUserBTN =  document.getElementById("GAFBTN");
-
-gafUserBTN.addEventListener('click', ()=>{
-  
-  console.log(inputGAF.value);
-  
-  if (inputGAF.value.trim() === '') {
-    InputUserContainer.style.display = "flex";
-
-    
-    
-    
-  } else {
-    
-InputUserContainer.style.display = "none";
-    //BringingBack
-    codeContainer.style.display = "flex";
+otpForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const entered = otpInputs.map(input => input.value).join('');
+  if (entered.length !== 6) {
+    otpMessage.textContent = 'Enter all six digits to continue.';
+    return;
   }
+  if (entered !== currentOtp) {
+    otpMessage.textContent = 'That code does not match. Check the demo OTP and try again.';
+    otpInputs.forEach(input => input.value = '');
+    otpInputs[0].focus();
+    return;
+  }
+  setStep(3);
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  gafId.value = randomId();
+  createOtp();
+  setStep(1);
+});
+
+gafId.value = randomId();
+createOtp();
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('.intro, .app-card');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+
+                if (element.classList.contains('intro')) {
+                    element.style.setProperty('--animate-duration', '8s');
+                } else {
+                    element.style.setProperty('--animate-duration', '1.2s');
+                }
+
+                element.classList.add('animate-on-scroll');
+
+                // Stop observing after the animation starts.
+                observer.unobserve(element);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    elements.forEach((element) => observer.observe(element));
+});
   
- //console.log(inputGAF.value);
-} );
+
